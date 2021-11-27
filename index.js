@@ -10,7 +10,7 @@ const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
 var findOrCreate = require("mongoose-findorcreate");
 
-mongoose.connect(process.env.DB_MONGO_URL2, {
+mongoose.connect(process.env.DB_MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -151,7 +151,7 @@ passport.use(
     {
       clientID: process.env.DB_GOOGLE_CLIENT_ID,
       clientSecret: process.env.DB_GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://bug-war.herokuapp.com/auth/google/bugwar",
+      callbackURL: "http://localhost:3000/auth/google/snapshot",
     },
     function (accessToken, refreshToken, profile, cb) {
       let extractedUser = profile.emails[0].value.substring(
@@ -180,7 +180,7 @@ app.get(
 );
 
 app.get(
-  "/auth/google/bugwar",
+  "/auth/google/snapshot",
   passport.authenticate("google", {
     failureRedirect: "/login",
   }),
@@ -201,7 +201,7 @@ passport.use(
     {
       clientID: process.env.DB_FB_APP_ID,
       clientSecret: process.env.DB_FB_APP_SECRET,
-      callbackURL: "https://bug-war.herokuapp.com/auth/facebook/bugwar",
+      callbackURL: "http://localhost:3000/auth/facebook/snapshot",
       profileFields: ["id", "emails", "name"],
     },
     function (accessToken, refreshToken, profile, cb) {
@@ -232,7 +232,7 @@ app.get(
 );
 
 app.get(
-  "/auth/facebook/bugwar",
+  "/auth/facebook/snapshot",
   passport.authenticate("facebook", {
     failureRedirect: "/login",
   }),
