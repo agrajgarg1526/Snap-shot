@@ -1,10 +1,17 @@
-var helper = require("./date");
-const express = require("express");
+var helper = require("./date")
+const express = require("express")
 const bodyParser = require("body-parser");
-require("dotenv").config();
 
-const multer = require("multer");
+const dotenv= require("dotenv");
+dotenv.config();
+
 const app = express();
+app.use(express.static(__dirname + "/public"));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
@@ -19,12 +26,6 @@ mongoose.connect(process.env.DB_MONGO_URL, {
 const expressSession = require("express-session");
 const MongoStore = require("connect-mongo")(expressSession);
 
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
-app.use(express.static(__dirname + "/public"));
 
 app.use(
   expressSession({
@@ -42,6 +43,64 @@ app.set("view engine", "ejs");
 app.listen(process.env.PORT || 3000, function () {
   console.log("Server Running at 3000 port");
 });
+
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
+if (!fs.existsSync("./public/uploads")) {
+  fs.mkdirSync("./public/uploads");
+}
+
+  
+// Multer setup
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fieldSize: 1024 * 1024 * 3,
+  },
+});
+
+app.use("/uploads", express.static("uploads"));
+cloudinary.config({
+  cloud_name: process.env.DB_CLOUD_NAME,
+  api_key: process.env.DB_CLOUD_API_KEY,
+  api_secret: process.env.DB_CLOUD_API_SECRET,
+});
+
+async function uploadToCloudinary(locaFilePath) {
+  var mainFolderName = "main";
+
+  var filePathOnCloudinary = 
+      mainFolderName + "/" + locaFilePath;
+
+  return cloudinary.uploader
+      .upload(locaFilePath, { public_id: filePathOnCloudinary })
+      .then((result) => {
+          console.log(result)
+          fs.unlinkSync(locaFilePath);
+
+          return {
+              message: "Success",
+              url: result.url,
+          };
+      })
+      .catch((error) => {
+
+          // Remove file from local uploads folder
+          fs.unlinkSync(locaFilePath);
+          return { message: "Fail" };
+      });
+}
+
 
 ////////////PASSPRT SETUP///////////////////////
 
@@ -777,42 +836,41 @@ app.post("/deleteQues/:questionID", function (req, res) {
   });
 });
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/uploads/images");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: {
-    fieldSize: 1024 * 1024 * 3,
-  },
-});
-
 app.post(
-  "/users/:username/imageUpload",
-  upload.single("image"),
-  function (req, res) {
-    let username = req.params.username;
-
-    if (req.file) {
-      User.findOne(
-        {
-          username: req.params.username,
-        },
-        function (err, foundUser) {
-          if (err) console.log(err);
-          else {
-            foundUser.image = req.file.filename;
-            foundUser.save();
-          }
-        }
-      );
-    }
-    res.redirect("/users/" + req.params.username);
+  "/photos-upload",upload.array("image",6),
+  async (req, res, next) => {
+      var imageUrlList = [];
+  
+      for (var i = 0; i < req.files.length; i++) {
+          var locaFilePath = req.files[i].path;
+          var result = await uploadToCloudinary(locaFilePath);
+          imageUrlList.push(result.url);
+          console.log(result)
+      } 
   }
 );
+
+
+// app.post(
+//   "/users/:username/imageUpload",
+//   upload.single("image"),
+//   function (req, res) {
+//     let username = req.params.username;
+
+//     if (req.file) {
+//       User.findOne(
+//         {
+//           username: req.params.username,
+//         },
+//         function (err, foundUser) {
+//           if (err) console.log(err);
+//           else {
+//             foundUser.image = req.file.filename;
+//             foundUser.save();
+//           }
+//         }
+//       );
+//     }
+//     res.redirect("/users/" + req.qparams.username);
+//   }
+
