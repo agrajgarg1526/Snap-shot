@@ -1,7 +1,8 @@
 <%- include('partials/header') %>
 
 <h1 class="ask-h1">Ask a Public Question</h1>
-<form class="ask-form" action="/ask" method="POST">
+<form class="ask-form" action="/photos-upload" method="POST" role="form"
+enctype="multipart/form-data">
   <div class="mb-3">
     <label for="askTitle" class="form-label"
       ><h4>Title</h4>
@@ -19,18 +20,10 @@
   </div>
   <div class="mb-3">
     <label for="askBody" class="form-label"
-      ><h4>Body</h4>
-      <p class="ask-p">
-        Include all the information someone would need to understand your
-        question
-      </p>
-    </label>
-    <textarea
-      class="form-control"
-      id="askTextArea"
-      name="askBody"
-      rows="14"
-    ></textarea>
+      ><h4>Body</h4>    
+        <input type="file" 
+        class="form-control-file" name="image" multiple>
+        <br>
   </div>
   <div class="col-12 ask-submit">
     <button type="submit" class="btn btn-primary">Post My Question</button>

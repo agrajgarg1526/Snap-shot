@@ -85,7 +85,7 @@ async function uploadToCloudinary(locaFilePath) {
   return cloudinary.uploader
       .upload(locaFilePath, { public_id: filePathOnCloudinary })
       .then((result) => {
-          console.log(result)
+          // console.log(result)
           fs.unlinkSync(locaFilePath);
 
           return {
@@ -155,6 +155,7 @@ const quesSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  image:[String]
 });
 
 // quesSchema.plugin(timeZone, { paths: ['date', 'subDocument.subDate'] });
@@ -509,53 +510,43 @@ app.get("/logout", function (req, res) {
   });
 });
 
-app.get("/ask", function (req, res) {
-  if (req.user) {
-    // logged in
-    res.render("ask");
-  } else {
-    // not logged in
-    res.redirect("login");
-  }
-});
+// app.post("/ask", function (req, res) {
+//   // console.log(req.body);
+//   // console.log(req.user);
 
-app.post("/ask", function (req, res) {
-  // console.log(req.body);
-  // console.log(req.user);
+//   const question = new Question({
+//     title: req.body.askTitle,
+//     body: req.body.askBody,
+//     upvote: 0,
+//     askedBy: req.user.username,
+//     // date = new Date()
+//   });
+//   question.save();
 
-  const question = new Question({
-    title: req.body.askTitle,
-    body: req.body.askBody,
-    upvote: 0,
-    askedBy: req.user.username,
-    // date = new Date()
-  });
-  question.save();
+//   User.findOne(
+//     {
+//       username: req.user.username,
+//     },
+//     function (err, foundUser) {
+//       if (err) console.log(err);
+//       else {
+//         //  console.log(foundUser);
+//         Question.findOne(
+//           {
+//             title: req.body.askTitle,
+//           },
+//           function (err, foundQuestion) {
+//             foundUser.questions.push(foundQuestion.id);
+//             foundUser.save();
+//           }
+//         );
+//       }
+//     }
+//   );
 
-  User.findOne(
-    {
-      username: req.user.username,
-    },
-    function (err, foundUser) {
-      if (err) console.log(err);
-      else {
-        //  console.log(foundUser);
-        Question.findOne(
-          {
-            title: req.body.askTitle,
-          },
-          function (err, foundQuestion) {
-            foundUser.questions.push(foundQuestion.id);
-            foundUser.save();
-          }
-        );
-      }
-    }
-  );
-
-  const link = "/questions/" + question.id;
-  res.redirect(link);
-});
+//   const link = "/questions/" + question.id;
+//   res.redirect(link);
+// });
 
 app.get("/questions/:questionID", function (req, res) {
   // console.log(req.params.questionID);
@@ -836,41 +827,78 @@ app.post("/deleteQues/:questionID", function (req, res) {
   });
 });
 
+app.get("/ask", function (req, res) {
+  if (req.user) {
+    // logged in
+    res.render("ask");
+  } else {
+    // not logged in
+    res.redirect("login");
+  }
+});
+
+
 app.post(
   "/photos-upload",upload.array("image",6),
   async (req, res, next) => {
       var imageUrlList = [];
-  
+      console.log(req.body)
+      console.log(req.files)
       for (var i = 0; i < req.files.length; i++) {
           var locaFilePath = req.files[i].path;
           var result = await uploadToCloudinary(locaFilePath);
           imageUrlList.push(result.url);
-          console.log(result)
       } 
+    
+      const question = new Question({
+        title: req.body.askTitle,
+        upvote: 0,
+        askedBy: req.user.username,
+        image:imageUrlList
+      });
+      question.save();
+
+      User.findOne(
+        {
+          username: req.user.username,
+        },
+        function (err, foundUser) {
+          if (err) console.log(err);
+          else {
+            Question.findOne(
+              {
+                title: req.body.askTitle,
+              },
+              function (err, foundQuestion) {
+                foundUser.questions.push(foundQuestion.id);
+                foundUser.save();
+              }
+            );
+          }
+        })
+        res.redirect("list");
   }
 );
 
 
-// app.post(
-//   "/users/:username/imageUpload",
-//   upload.single("image"),
-//   function (req, res) {
-//     let username = req.params.username;
-
-//     if (req.file) {
-//       User.findOne(
-//         {
-//           username: req.params.username,
-//         },
-//         function (err, foundUser) {
-//           if (err) console.log(err);
-//           else {
-//             foundUser.image = req.file.filename;
-//             foundUser.save();
-//           }
-//         }
-//       );
-//     }
-//     res.redirect("/users/" + req.qparams.username);
-//   }
-
+app.post(
+  "/users/:username/imageUpload",
+  upload.single("image"),
+  function (req, res) {
+    let username = req.params.username;
+    if (req.file) {
+      User.findOne(
+        {
+          username: req.params.username,
+        },
+        function (err, foundUser) {
+          if (err) console.log(err);
+          else {
+            foundUser.image = req.file.filename;
+            foundUser.save();
+          }
+        }
+      );
+     }
+    res.redirect("/users/" + req.qparams.username);
+  });

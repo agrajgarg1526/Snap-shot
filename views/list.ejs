@@ -68,9 +68,15 @@
                 <a class="ask-user" href="/users/<%=foundQuestions[i].askedBy%>"><%=link%></a>
                 <%= date.date(foundQuestions[i].time)%>
             </div>
+
+            <div>
+                <%for(var j=0;j<foundQuestions[i].image.length;j++){%>
+                    <img src="<%=foundQuestions[i].image[j]%>" alt="error">
+                <%}%>
+            </div>
             <hr class=list-ques-hr>
         </div>
-            <%}%>
+     <%}%>
 
 
 </div>
