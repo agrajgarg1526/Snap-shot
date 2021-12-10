@@ -54,12 +54,12 @@
         </div>
 
         <div class="user-properties-2">
-            <img src="/uploads/images/<%= user.image %> " alt="">
-            <%if(username===user.username){%>
-            <form action="/users/<%=username%>/imageUpload" method="POST" role="form"
-                enctype="multipart/form-data">
+            <img src="<%= user.image %> " alt="">
+            <%if(username===user.username){%>   
+                <form class="ask-form" action="/users/<%=username%>/imageUpload" method="POST" 
+                    role="form" enctype="multipart/form-data">
                 <input type="file" 
-                class="form-control-file" name="image">
+                class="form-control-file" name="profile-file">
                 <br>
                 <button type="submit">Upload</button>
             </form>
