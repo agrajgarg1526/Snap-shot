@@ -1,7 +1,8 @@
 <%- include('partials/header') %>
 <div class="wrapper">
+  <%=username%>
   <h1 class="ask-h1">Post <p>Your Art</p> </h1>
-<form class="ask-form" action="/photos-upload" method="POST" role="form"
+<form class="ask-form" action="/photos-upload/<%=username%>" method="POST" role="form"
 enctype="multipart/form-data">
   <div class="mb-3">
     <label for="askTitle" class="form-label"

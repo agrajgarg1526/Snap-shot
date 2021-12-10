@@ -1,247 +1,192 @@
- 
-
- <!-- <div class="login">
-  <div class="social-login">
-    <a href="/auth/google" class="btn btn-block btn-social btn-google"
-      ><i class="fab fa-google"></i>Sign in with Google</a
-    >
-    <a href="/auth/facebook" class="btn btn-block btn-social btn-facebook"
-      ><i class="fab fa-facebook"></i>Sign in with Facebook</a
-    >
-  </div>
-  <p class="or-p">-or-</p>
-  <div class="local-login">
-    <form action="/login" method="POST">
-      <h1 class="h3 mb-3 fw-normal">Sign In to Bugwar</h1>
-      <label for="inputUsername" class="visually-hidden">Username</label>
-      <input
-        type="text"
-        id="inputUsername"
-        class="form-control"
-        placeholder="Username"
-        name="username"
-        required
-        autofocus
-      />
-      <label for="inputPassword" class="visually-hidden">Password</label>
-      <input
-        type="password"
-        id="inputPassword"
-        class="form-control"
-        placeholder="Password"
-        name="password"
-        required
-      />
-      <p class="alert"><%=text%></p>
-      <div class="checkbox mb-3"></div>
-      <button class="w-100 btn btn-lg btn-primary" type="submit">
-        Sign in
-      </button>
-      <p class="no-account-p">Don’t have an account?</p>
-      <a href="/signup">Sign Up</a>
-    </form>
-    <p class="mt-5 mb-3 text-muted">&copy; BugWar</p>
-  </div>
-</div>  -->
 <style>
-*{
-  margin:0;
-  padding:0;
-  font-family: sans-serif;
-}
-.hero
-{
-  height:100%;
-  width:100%;
-  background-image: linear-gradient(rgb(252, 125, 146)
- , maroon);
-  background-position: center;
-  background-size:cover;
-  position: absolute;
- 
-}
-.form-box
-{
-  width:380px;
-  height:480px;
-  position:relative;
-  margin:6% auto;
-  background: #fff;
-   padding:5px;
-   overflow: hidden; 
-  
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: white;
+  }
 
-}
-.button-box
-{
-  width: 220px;
-  margin:35px auto;
-  position:relative;
-  box-shadow: 0 0 20px 9px #ff61241f;
-  border-radius:30px;
+  .hero {
+    height: 100%;
+    width: 100%;
+    background-color: #303030;
+    background-position: center;
+    background-size: cover;
+    position: absolute;
 
-} 
-.toggle-btn
-{
-  padding:10px 30px;
-  cursor:pointer;
-  background: transparent;
-  border:0;
-  outline:none;
-  position: relative;
+  }
 
+  .form-box {
+    width: 380px;
+    height: 480px;
+    position: relative;
+    margin: 6% auto;
+    background: white;
+    padding: 5px;
+    overflow: hidden;
+    border: #ff105f;
+    border-style: groove;
+    border-radius: 10%;
+    border-width: 2px;
+  }
 
-}
- #btn 
-{
-top:0;
-left:0;
-position: absolute;
-width:110px;
-height:100%;
-background: linear-gradient(to right,#ff105f,maroon );
-border-radius:30px;
-transition: .5s;
+  .button-box {
+    width: 220px;
+    margin: 35px auto;
+    position: relative;
+    box-shadow: 0 0 20px 9px #ff61241f;
+    border-radius: 30px;
 
-}  
-.social-icons
-{
-   margin:30px auto; 
-  text-align:center;
-}
-.social-icons img{
-  width: 30px;
-  margin:0px 12px;
-  box-shadow:0 0 20px 0 #7f7f7f3d;
-  cursor:pointer;
-  border-radius: 50%;
-  
-}
-#fb
-{
- background-image: url(C:\\Users\\Abhishek\\Desktop\\Major\\snap-shot\\public\\uploads\\fb.png);
-}
-#go
-{
-background-image: url(C:\\Users\\Abhishek\\Desktop\\Major\\snap-shot\\public\\uploads\\gp.png);
-}
-.input-group
-{
-  top:180px;
-  position:absolute;
-  width:280px;
-  transition: .5s;
- 
-} 
-.input-field
-{
-  width:100%;
-  padding:10px 0;
-   margin:5px 0px;
-   border-left: 0;
-   border-top: 0;
-   border-right: 0;
-  border-bottom: 1px solid #999;
-outline:none;
-background: transparent;
+  }
 
-  
-} 
-.submit-btn
-{
-  width:85%;
-  padding:10px 30px;
-  cursor: pointer;
-  display: block;
-  margin: auto;
-  background: linear-gradient(to right,#ff105f,maroon );
-  border:0;
-  outline:none;
-  border-radius: 30px;
-}
-.check-box
-{
-  margin:30px 10px 30px 0;
-}
-span
-{
-  color: #777;
-  font-size:12px ;
-  bottom:68px;
-  position: absolute;
+  .toggle-btn {
+    padding: 10px 30px;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    outline: none;
+    position: relative;
 
 
-}
+  }
 
-#login
-{
-  left:50px;
+  #btn {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 110px;
+    height: 100%;
+    background: linear-gradient(to right, #ff105f, maroon);
+    border-radius: 30px;
+    transition: .5s;
 
-}
-#register
-{
-  left:450px;
-  
-  
-}   
+  }
+
+  .social-icons {
+    margin: 30px auto;
+    text-align: center;
+  }
+
+  .social-icons img {
+    width: 30px;
+    margin: 0px 12px;
+    box-shadow: 0 0 20px 0 #7f7f7f3d;
+    cursor: pointer;
+    border-radius: 50%;
+
+  }
+
+  .input-group {
+    top: 180px;
+    position: absolute;
+    width: 280px;
+    transition: .5s;
+
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 10px 0;
+    margin: 5px 0px;
+    border-left: 0;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 1px solid #999;
+    outline: none;
+    background: transparent;
+
+
+  }
+
+  .submit-btn {
+    width: 85%;
+    padding: 10px 30px;
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    background-image: linear-gradient(#ff105f, maroon);
+    border: 0;
+    outline: none;
+    border-radius: 30px;
+  }
+
+  .check-box {
+    margin: 30px 10px 30px 0;
+  }
+
+  span {
+    color: #777;
+    font-size: 12px;
+    bottom: 68px;
+    position: absolute;
+
+
+  }
+
+  #login {
+    left: 50px;
+
+  }
+
+  #register {
+    left: 450px;
+
+
+  }
 </style>
-     <div class="hero" >
-        <div class="form-box">
-            <div class="button-box">
-                <div id="btn"></div>            
-            <button type="button"class="toggle-btn" onclick="login()">Log In</button>
-            
-            <button type="button"class="toggle-btn"onclick="signup()">Sign Up</button>
+<div class="hero">
+  <div class="form-box">
+    <div class="button-box">
+      <div id="btn"></div>
+      <button type="button" class="toggle-btn" onclick="login()">Log In</button>
 
-            </div>
-             <div class="social-icons ">
-              <a href="/auth/facebook">
-                <img id="fb"src="/uploads/fb.png" alt="">
-              </a>
-                <a href="/auth/google">
-                <img id="gp"src="/uploads/gp.png" alt="">
-              </a>
-     
-             </div> 
-              <form  id="login"class="input-group" action="/login"method="POST">
-                <input type="text"class="input-field" name="username" id=""placeholder="User Id" required >
-                 <input type="text"class="input-field" name="password" id=""placeholder="Enter Password" required>
-                 <input type="checkbox"class="check-box" name="" id=""><span>Remember Password</span>
-                 <button type ="submit"class="submit-btn">Log In</button>
-             </form>
-             <form id="register" class="input-group" action="/signup"method="POST">
-                <input type="text"class="input-field" name="username" id=""placeholder="User Id" required>
-                <input type="email"class="input-field" name="email" id=""placeholder="Email Id" required>
-                 <input type="text"class="input-field" name="password" id=""placeholder="Enter Password" required>
-                 <input type="checkbox"class="check-box" name="" id=""><span>Agree</span>
-                 <button type ="submit"class="submit-btn">Sign up</button>
-             </form>
-             
-                         
-            </div>   
-            </div>
-              
-             
-       
-    
-        
-    <script>
-         var y=document.getElementById("register");
-        var x=document.getElementById("login");
-        var z=document.getElementById("btn");
-        function signup()
-        {
-            x.style.left="400px";
-            y.style.left="50px";
-            z.style.left="110px";
+      <button type="button" class="toggle-btn" onclick="signup()">Sign Up</button>
 
-        }
-        function login()
-        {
-            x.style.left="50px";
-            y.style.left="450px";
-            z.style.left="0px";
+    </div>
+    <div class="social-icons ">
+      <a href="/auth/facebook">
+        <img id="fb" src="/uploads/fb.png" alt="">
+      </a>
+      <a href="/auth/google">
+        <img id="gp" src="/uploads/gp.png" alt="">
+      </a>
 
-        }
-    </script>
+    </div>
+    <form id="login" class="input-group" action="/login" method="POST">
+      <input type="text" class="input-field" name="username" id="" placeholder="Username" required>
+      <input type="text" class="input-field" name="password" id="" placeholder="Password" required>
+      <button style="margin-top:20px ;" type="submit" class="submit-btn">Log In</button>
+    </form>
+    <form id="register" class="input-group" action="/signup" method="POST">
+      <input type="text" class="input-field" name="username" id="" placeholder="Username" required>
+      <input type="email" class="input-field" name="email" id="" placeholder="Email" required>
+      <input type="text" class="input-field" name="password" id="" placeholder="Password" required>
+      <button style="margin-top:20px" type="submit" class="submit-btn">Sign up</button>
+    </form>
+
+
+  </div>
+</div>
+
+
+
+
+
+<script>
+  var y = document.getElementById("register");
+  var x = document.getElementById("login");
+  var z = document.getElementById("btn");
+  function signup() {
+    x.style.left = "400px";
+    y.style.left = "50px";
+    z.style.left = "110px";
+
+  }
+  function login() {
+    x.style.left = "50px";
+    y.style.left = "450px";
+    z.style.left = "0px";
+
+  }
+</script>
 <%- include('partials/footer') %>

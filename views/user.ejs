@@ -1,8 +1,7 @@
 <%- include('partials/header') %>
 <div class="user">
-    <div class="user-form">
-       
-        <form action="/users/<%=user.username%>" method="GET">
+    <div style="position: relative;left: 900px;" class="user-form">
+          <form action="/users/<%=user.username%>" method="GET">
             <p>
                 <span><button type="submit"
                         class="btn btn-secondary user-btn <%= cls==="profile"? "user-btn-active":"";%>" name="questions"
@@ -13,174 +12,154 @@
                         Profile
                     </button></span>
                 <span><button type="submit"
-                        class="btn btn-secondary user-btn <%= cls==="asked"? "user-btn-active":"";%>" name="questions"
+                        class="btn btn-secondary user-btn <%= cls==="added"? "user-btn-active":"";%>" name="questions"
                         value="asked">
                         Posts
                     </button></span>
                 <span><button type="submit"
-                        class="btn btn-secondary user-btn <%= cls==="upvoted"? "user-btn-active":"";%>" name="questions"
+                        class="btn btn-secondary user-btn <%= cls==="liked"? "user-btn-active":"";%>" name="questions"
                         value="upvoted">
                         Liked Posts
-                    </button></span>
-                <span><button type="submit"
-                        class="btn btn-secondary user-btn <%=cls==="answered"? "user-btn-active":"";%>" name="questions"
-                        value="answered">
-                        Commented Posts
                     </button></span>
             </p>
         </form>
     </div>
     <%if(cls=="profile"){%>
-    <div class="user-properties">
-        
-        <div class="user-properties-1">
-            <h1 class="user-username"><%=user.username%></h1>
-            <p class="user-email"><i class="fas fa-envelope"></i> <%=user.email%></p>
-            <p class="user-time">
-            <i class="fas fa-user"></i> User since 
-            <%=date.date(user.time).slice(0,date.date(user.time).length-3)%>
-            </p>
-            <p class="user-time">
-                <i class="far fa-lightbulb"></i>
-                Rating :
-                <%if(rating===0){%>
-                    &nbsp;&nbsp; -
-                    <%} else{%>
-                    <%for(let i=0;i<rating;i++){%>
-                    <i class="fas fa-star"></i>
-                    <%}%>
-                <%}%>
-            </p>
-        </div>
-
-        <div class="user-properties-2">
-            <img src="/uploads/images/<%= user.image %> " alt="">
-            <%if(username===user.username){%>
-            <form action="/users/<%=username%>/imageUpload" method="POST" role="form"
-                enctype="multipart/form-data">
-                <input type="file" 
-                class="form-control-file" name="image">
-                <br>
-                <button type="submit">Upload</button>
-            </form>
-            <% } %> 
-        </div>
-    </div>
-    <div class="container stats">
-        <div class="row">
-            <div class=" user-stats-div col-lg-4 col-md-6">
-                <div>
-                    <h4> Number of Posts
-                        <br>
-                        <%if(username===user.username){%>
-                        You
-                        <%}%>
-                 Made</h4>
-                <br>
-                <h2 class="user-stats"><%=user.questions.length%></h2>
-                </div>
-            </div>
-            <div class="user-stats-div col-lg-4 col-md-6">
-                <div>
-                    <h4> Number of Posts
-                        <br>
-                        <%if(username===user.username){%>
-                        You
-                        <%}%>
-                     Liked</h4>
-                     <br>
-                <h2 class="user-stats"><%=user.upvotedQuestions.length%></h2>
-                </div>
-            </div>
-            <div class="user-stats-div col-lg-4 col-md-6">
-                <div>
-                    <h4> Number of Posts 
-                        <br>
-                        <%if(username===user.username){%>
-                        You
-                        <%}%>
-                     Disliked</h4>
-                     <br>
-              <h2 class="user-stats"><%=user.downvotedQuestions.length%></h2>
-                </div>
-            </div>
-            <div class="user-stats-div col-lg-4 col-md-6">
-                <div>
-                    <h4> Number of Posts
-                        <br>
-                        <%if(username===user.username){%>
-                        You
-                        <%}%>
-                     Commented</h4>
-                     <br>
-              <h2 class="user-stats"><%=user.answeredQuestions.length%></h2>
-                </div>
-            </div>
-            <div class="user-stats-div col-lg-4 col-md-6">
-                <div>
-                    <h4>Likes gained by
-                        <br>
-                        <%if(username===user.username){%>
-                        Your
-                        <%}%>
-                    Posts</h4>
-                     <br>
-              <h2 class="user-stats"><%=upvoteQuestions%></h2>
-                </div>
-            </div>
-            <div class="user-stats-div col-lg-4 col-md-6">
-                <div>
-                    <h4>Likes gained by
-                        <br>
-                        <%if(username===user.username){%>
-                        Your
-                        <%}%>
-                    Comments</h4>
-                     <br>
-              <h2 class="user-stats"><%=upvoteAnswers%></h2>
-                </div>
-            </div>
-        </div>
-    </div>
+     <div style="position: relative;top: 100px;left: 100px;" class="container">
+         <div class="row">
+             <div class="col-5">
+                <img style="border-radius: 50%;" src="<%= user.image %> " alt="">
+             </div>
+             <div class="col-7">
+                <h1 class="user-username"><%=user.username%></h1>
+                <p class="user-email"><i class="fas fa-envelope"></i><a style="text-decoration: none;color:white;" href="mailto:<%=user.email%>"> <%=user.email%></a></p>
+                <p style="font-size: 15px;" class="user-time">
+                <i class="fas fa-user"></i> User since 
+                <%=date.date(user.time)%>
+                </p>  
+                <%if(username===user.username){%>   
+                    <form class="ask-form" action="/users/<%=username%>/imageUpload" method="POST" 
+                        role="form" enctype="multipart/form-data">
+                    <input style="position: relative;right: 150px;"type="file" 
+                    class="form-control-file" name="profile-file">
+                    <br>
+                    <button style="position: relative;bottom: 30px;"type="submit">Upload</button>
+                </form>
+                <% } %>  
+             </div>
+         </div>
+     </div>
     <%} else{%>
     <div class="user-questions-div">
         <%if(arr.length===0){%>
-        <p style="padding-top: 50px;padding-left:100px;color:#6e7c7c;;">No Questions <%=cls%></p>
+        <p style="padding-top: 50px;padding-left:100px;color:#6e7c7c;">No Posts <%=cls%></p>
+        <%}else{%>
+            <div class="list-div">
+                <%for(let i=0;i<arr.length;i++){%>
+                  <div class="list-div-div">
+                    
+                    <a href="/users/<%=arr[i].askedby.username%>">
+                      
+                  <img class="list-div-div-img" src="<%=arr[i].askedby.image%>" alt="/uploads/noprofile"></a>
+                  
+                  
+                    <div class="list-upvote-div askedby">
+                    
+                        <a class="ask-user" href="/users/<%=arr[i].askedby.username%>">
+                          <%=arr[i].askedby.username%>
+                        </a>
+                      <br>
+                      <p style="font-size: 12px;position: relative;float: left; left: 20px;bottom: 10px;"><%= date.date(arr[i].time)%></p>
+                        
+                    </div>
+          
+                    <p style="position: relative;"> <a class="list-a container" href="/questions/<%=arr[i].id%>" style="color:white;font-size: 15px;">
+                        <%=arr[i].title%>
+                        
+                      </a>
+                    </p>
+                    <%if(arr[i].image.length==1){%>
+                    <p style="position: relative;float:right;right: 120px;"><%=arr[i].image.length%> photo</p>
+                    <%}else{%>
+                      <p style="position: relative;float:right;right: 120px;"><%=arr[i].image.length%> photos</p>
+                    <%}%>
+                    <div id="<%=i%>carouselExampleControls"  data-interval="false" class="carousel slide"  data-ride="carousel">
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                              <img src="<%=arr[i].image[0]%>" alt="error"class="d-block w-100 ctr">
+                        </div>
+                        
+                          <%for(var j=1;j<arr[i].image.length;j++){%>
+                            <div class="carousel-item ">
+                              <img src="<%=arr[i].image[j]%>" alt="error"class="d-block w-100 ctr">
+                        </div>
+                        <%}%>
+                        
+                      </div>
+                      <a class="carousel-control-prev" href="#<%=i%>carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                      <a class="carousel-control-next" href="#<%=i%>carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </div>
+                    <p style="font-size: 12px;position: relative;top: 5px;" > <svg style="width:15px" aria-hidden="true" focusable="false" 
+                      data-prefix="far" data-icon="thumbs-up" class="svg-inline--fa fa-thumbs-up" role="img" xmlns="http://www.w3.org/2000/svg" 
+                      viewBox="0 0 512 512"><path fill="currentColor" d="M96 191.1H32c-17.67 0-32 14.33-32 31.1v223.1c0 17.67 14.33 31.1 32 31.1h64c17.67 
+                      0 32-14.33 32-31.1V223.1C128 206.3 113.7 191.1 96 191.1zM512 227c0-36.89-30.05-66.92-66.97-66.92h-99.86C354.7 135.1 360 113.5 
+                      360 100.8c0-33.8-26.2-68.78-70.06-68.78c-46.61 0-59.36 32.44-69.61 58.5c-31.66 80.5-60.33 66.39-60.33 93.47c0 12.84 10.36 23.99 
+                      24.02 23.99c5.256 0 10.55-1.721 14.97-5.26c76.76-61.37 57.97-122.7 90.95-122.7c16.08 0 22.06 12.75 22.06 20.79c0 7.404-7.594 
+                      39.55-25.55 71.59c-2.046 3.646-3.066 7.686-3.066 11.72c0 13.92 11.43 23.1 24 23.1h137.6C455.5 208.1 464 216.6 464 227c0 
+                      9.809-7.766 18.03-17.67 18.71c-12.66 .8593-22.36 11.4-22.36 23.94c0 15.47 11.39 15.95 11.39 28.91c0 25.37-35.03 12.34-35.03 
+                      42.15c0 11.22 6.392 13.03 6.392 22.25c0 22.66-29.77 13.76-29.77 40.64c0 4.515 1.11 5.961 1.11 9.456c0 10.45-8.516 18.95-18.97
+                       18.95h-52.53c-25.62 0-51.02-8.466-71.5-23.81l-36.66-27.51c-4.315-3.245-9.37-4.811-14.38-4.811c-13.85 0-24.03 11.38-24.03 24.04c0 
+                       7.287 3.312 14.42 9.596 19.13l36.67 27.52C235 468.1 270.6 480 306.6 480h52.53c35.33 0 64.36-27.49 66.8-62.2c17.77-12.23 
+                       28.83-32.51 28.83-54.83c0-3.046-.2187-6.107-.6406-9.122c17.84-12.15 29.28-32.58 29.28-55.28c0-5.311-.6406-10.54-1.875-15.64C499.9 270.1 512 250.2 512 227z"></path>
+                      </svg> &nbsp;&nbsp;<%=arr[i].upvote%>&nbsp;Likes</p>
+                    
+                    <div style="position: relative; top:10px">
+                      <form style="display: inline-block;margin-right: 5px;" action="/vote" method="POST">
+                        <button class="vote" type="submit" name="value" value="up">
+                          <svg style="width:25px;" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="thumbs-up" class="svg-inline--fa fa-thumbs-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" 
+                            d="M128 447.1V223.1c0-17.67-14.33-31.1-32-31.1H32c-17.67 0-32 14.33-32 31.1v223.1c0 17.67 14.33 31.1 32 31.1h64C113.7 479.1 128 465.6 128 447.1zM512 224.1c0-26.5-21.48-47.98-48-47.98h-146.5c22.77-37.91 34.52-80.88 34.52-96.02C352
+                             56.52 333.5 32 302.5 32c-63.13 0-26.36 76.15-108.2 141.6L178 186.6C166.2 196.1 160.2 210 160.1 224c-.0234 .0234 0 0 0 0L160 384c0 15.1 7.113 29.33 19.2 38.39l34.14 25.59C241 468.8 274.7 480 309.3 480H368c26.52 0 48-21.47 48-47.98c0-3.635-
+                             .4805-7.143-1.246-10.55C434 415.2 448 397.4 448 376c0-9.148-2.697-17.61-7.139-24.88C463.1 347 480 327.5 480 304.1c0-12.5-4.893-23.78-12.72-32.32C492.2 270.1 512 249.5 512 224.1z"></path></svg>
+                        Like
+                            </button>
+                          
+                        <input type="hidden" name="id" value=<%=arr[i].id%> ç/>
+                      </form>
+                  
+                      <form style="display: inline-block;margin-left: 5px;"  action="/vote" method="POST">
+                        <button class="vote" type="submit" name="value" value="down">
+                          <svg style="width:25px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="thumbs-down" class="svg-inline--fa fa-thumbs-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" 
+                            d="M96 32.04H32c-17.67 0-32 14.32-32 31.1v223.1c0 17.67 14.33 31.1 32 31.1h64c17.67 0 32-14.33 32-31.1V64.03C128 46.36 113.7 32.04 96 32.04zM467.3 240.2C475.1 231.7 480 220.4 480 207.9c0-23.47-16.87-42.92-39.14-47.09C445.3 153.6 448 
+                            145.1 448 135.1c0-21.32-14-39.18-33.25-45.43C415.5 87.12 416 83.61 416 79.98C416 53.47 394.5 32 368 32h-58.69c-34.61 0-68.28 11.22-95.97 31.98L179.2 89.57C167.1 98.63 160 112.9 160 127.1l.1074 160c0 0-.0234-.0234 0 0c.0703 13.99 6.123 
+                            27.94 17.91 37.36l16.3 13.03C276.2 403.9 239.4 480 302.5 480c30.96 0 49.47-24.52 49.47-48.11c0-15.15-11.76-58.12-34.52-96.02H464c26.52 0 48-21.47 48-47.98C512 262.5 492.2 241.9 467.3 240.2z"></path></svg>             
+                      Dislike
+                          </button>
+                          
+                        <input type="hidden" name="id" value=<%=arr[i].id%> />
+                      </form>
+                    </div>
+                       
+                    <a style="text-decoration: none;" href="/questions/<%=arr[i].id%>">
+                      <div class="list-upvote-div">
+                        <%=arr[i].answers.length%>
+                        Comments
+                      </div></a>
+                      <a style="position: relative;float:right;right: 100px;bottom: 400px;" class="btn btn-primary" href="/questions/<%=arr[i].id%>">View Post</a>
+                    <hr class=list-ques-hr>
+                  </div>
+          
+                  <%}%>
+
+            </div>
         <%}%>
-        <%for(let i=0;i<arr.length;i++){%>
-            <div class="user-questions-div-div">
-            <p><a class="list-a" href="/questions/<%=arr[i].id%>"><%=arr[i].title%></a></p>
-            <a class="upvote-a" href="/questions/<%=arr[i].id%>">
-                <div class="list-upvote-div">
-                    Likes
-                    <br>
-                    <%=arr[i].upvote%>
-                </div>
-                <div class="list-upvote-div">
-                    Posts
-                    <br>
-                    <%=arr[i].answers.length%>
-                </div>
-            </a>
-            <%if(cls==="asked"){%>
-            <div class="list-upvote-div askedby">
-                Posted
-                <%= date.date(arr[i].time)%>
-            </div>
-            <%} else{%>
-            <div class="list-upvote-div askedby">
-                <%let link=username===arr[i].askedBy?"You":arr[i].askedBy;%>
-                Posted By :
-                <a class="ask-user" href="/users/<%=arr[i].askedBy%>"><%=link%></a>
-                <%= date.date(arr[i].time)%>
-            </div>
-        
-            <%}%>
-            <hr class="user-ques-hr">
-        </div>
+    </div>
     <%}%>
-            <%}%>
-</div>
 </div>
 <%- include('partials/footer') %>
 

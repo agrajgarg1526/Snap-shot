@@ -13,22 +13,22 @@ function date(diff) {
   msec -= months * 1000 * 60;
 
   if (months > 0) {
-    if (months == 1) return months + " month ago";
+    if (months == 1) return months + " month";
     else if (months >= 12) {
-      if (months % 12 === 0 && months === 12) return "1 year ago";
+      if (months % 12 === 0 && months === 12) return "1 year";
       else if (months % 12 == 0)
-        return months / 12 + " year, " + (months % 12) + " months ago";
-    } else return months + " months ago";
+        return months / 12 + " year, " + (months % 12) + " months";
+    } else return months + " months";
   } else if (days > 0) {
-    if (days == 1) return days + " day ago";
-    else return days + " days ago";
+    if (days == 1) return days + " day";
+    else return days + " days";
   } else {
     if (hours > 0) {
-      if (hours == 1) return hours + " hour ago";
-      else return hours + " hours ago";
+      if (hours == 1) return hours + " hour";
+      else return hours + " hours";
     } else {if(minutes==0) return "";
-      else if (minutes == 1) return minutes + " minute ago";
-      else return minutes + " minutes ago";
+      else if (minutes == 1) return minutes + " minute";
+      else return minutes + " minutes";
     }
   }
 }
