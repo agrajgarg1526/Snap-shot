@@ -144,7 +144,7 @@ const quesSchema = new mongoose.Schema({
       },
     },
   ],
-  askedby: { type:Schema.Types.ObjectId, ref: "User" },
+  askedby: { type: Schema.Types.ObjectId, ref: "User" },
   time: {
     type: Date,
     default: Date.now,
@@ -368,116 +368,41 @@ app.post("/signup", function (req, res) {
 });
 
 app.get("/users/:username", async function (req, res) {
-  console.log(req.body);
-  console.log(req.params);
-  User.findOne(
+  var foundUser = await User.findOne(
     {
       username: req.params.username,
-    },
-    function (err, foundUser) {
-      if (err) console.log(err);
-      else {
-        let cls, arr, title;
-        if (
-          req.query.questions === "profile" ||
-          Object.keys(req.query).length === 0
-        ) {
-          cls = "profile";
-          arr = foundUser.answeredQuestions;
-        } else if (req.query.questions === "asked") {
-          cls = "asked";
-          arr = foundUser.questions;
-        } else if (req.query.questions === "upvoted") {
-          cls = "upvoted";
-          arr = foundUser.upvotedQuestions;
-        }
+    });
+  let cls, arr;
+  if (
+    req.query.questions === "profile" ||
+    Object.keys(req.query).length === 0
+  ) {
+    cls = "profile";
+    arr = [];
+  } else if (req.query.questions === "asked") {
+    cls = "added";
+    arr = foundUser.questions;
+  } else if (req.query.questions === "upvoted") {
+    cls = "liked";
+    arr = foundUser.upvotedQuestions;
+  }
+  var records = await Question.find().populate("askedby").where("_id").in(arr).exec();
 
-        let answers = foundUser.answeredQuestions;
-
-        Question.find()
-          .where("_id")
-          .in(arr)
-          .exec((err, records) => {
-            let rating = 0,
-              rating1 = 0,
-              rating2 = 0,
-              goodAnswers = 0,
-              totalAnswers = 0,
-              goodQuestions = 0,
-              totalQuestions = 0,
-              upvoteQuestions = 0,
-              upvoteAnswers = 0;
-              console.log(arr);
-              console.log(records);
-
-            // if (cls === "profile") {
-            //   for (let i = 0; i < records.length; i++) {
-            //     for (let j = 0; j < records[i].answers.length; j++) {
-            //       if (
-            //         records[i].answers[j].answeredBy === req.params.username
-            //       ) {
-            //         totalAnswers++;
-            //         if (records[i].answers[j].upvote >= 1) goodAnswers++;
-            //         upvoteAnswers += records[i].answers[j].upvote;
-            //       }
-            //     }
-            //   }
-            //   rating1 =
-            //     totalAnswers === 0 ? 0 : (goodAnswers * 100) / totalAnswers;
-
-            //   let questions = foundUser.questions;
-
-            //   Question.find()
-            //     .where("_id")
-            //     .in(questions)
-            //     .exec((err, records) => {
-            //       totalQuestions = records.length;
-            //       for (let i = 0; i < records.length; i++) {
-            //         if (records[i].upvote >= 1) goodQuestions++;
-            //         upvoteQuestions += records[i].upvote;
-            //       }
-
-            //       rating2 =
-            //         totalQuestions === 0
-            //           ? 0
-            //           : (goodQuestions * 100) / totalQuestions;
-
-            //       rating = (rating1 + rating2) / 2;
-
-            //       if (rating == 0) rating = 0;
-            //       else if (rating < 20) rating = 1;
-            //       else if (rating < 40) rating = 2;
-            //       else if (rating < 60) rating = 3;
-            //       else if (rating < 80) rating = 4;
-            //       else rating = 5;
-
-            //       res.render("user", {
-            //         user: foundUser,
-            //         date: helper,
-            //         cls: cls,
-            //         arr: records,
-            //         rating: rating,
-            //         upvoteQuestions: upvoteQuestions,
-            //         upvoteAnswers: upvoteAnswers,
-            //       });
-                // });
-            // } else {
-            //   res.render("user", {
-            //     user: foundUser,
-            //     date: helper,
-            //     cls: cls,
-            //     arr: records,
-            //   });
-            // }
-          });
-      }
-    }
-  );
-
-  // } else {
-  // not logged in
-  // res.render("login");
-  // }
+  if (req.user) {
+    res.render("user", {
+      user: foundUser,
+      date: helper,
+      cls: cls,
+      arr: records,
+      // rating: rating,
+      // upvoteQuestions: upvoteQuestions,
+      // upvoteAnswers: upvoteAnswers,
+    });
+  }
+  else {
+    // not logged in
+    res.render("login");
+  }
 });
 
 app.get("/logout", function (req, res) {
@@ -527,20 +452,20 @@ app.get("/logout", function (req, res) {
 // });
 
 app.get("/questions/:questionID", function (req, res) {
-  Question.findOne({"_id":req.params.questionID})
-        .populate("askedby")
-        .exec(function (err, foundQuestion) {
-          if (err) {
-            console.log(err);
-          } else {
-            res.render("question", {
-              question: foundQuestion,
-              date: helper,
-              user: foundQuestion.askedby.username,
-              query: req.query.sort,
-            });
-          }
+  Question.findOne({ "_id": req.params.questionID })
+    .populate("askedby")
+    .exec(function (err, foundQuestion) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("question", {
+          question: foundQuestion,
+          date: helper,
+          user: foundQuestion.askedby.username,
+          query: req.query.sort,
         });
+      }
+    });
 });
 
 app.post("/vote", function (req, res) {
@@ -889,7 +814,7 @@ app.post(
       askedby: res.locals.id,
       image: imageUrlList,
     });
-    
+
     question.save();
 
     User.findOne(

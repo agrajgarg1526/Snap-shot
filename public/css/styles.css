@@ -377,7 +377,7 @@ font-family: 'Poppins', sans-serif;
   color: #ce1212;
 }
 .user-properties {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   margin-bottom: 75px;
 }
 
@@ -1216,3 +1216,28 @@ a,
 {
   height: 50vh;
 }
+
+
+/* <div class="user-properties"> 
+<div class="user-properties-1">
+    <h1 class="user-username"><%=user.username%></h1>
+    <p class="user-email"><i class="fas fa-envelope"></i> <%=user.email%></p>
+    <p class="user-time">
+    <i class="fas fa-user"></i> User since 
+    <%=date.date(user.time)%>
+    </p>   
+</div>
+
+<div class="user-properties-2">
+    <img style="border-radius: 50%;height: 50%;" src="<%= user.image %> " alt="">
+    <%if(username===user.username){%>   
+        <form class="ask-form" action="/users/<%=username%>/imageUpload" method="POST" 
+            role="form" enctype="multipart/form-data">
+        <input type="file" 
+        class="form-control-file" name="profile-file">
+        <br>
+        <button type="submit">Upload</button>
+    </form>
+    <% } %> 
+</div>
+</div> */
