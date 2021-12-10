@@ -230,6 +230,10 @@ font-family: 'Poppins', sans-serif;
   color: #f48024;
 }
 
+.vote2:hover{
+  color: #f48024;
+}
+
 .on {
   color: #f48024;
 }
@@ -243,6 +247,7 @@ font-family: 'Poppins', sans-serif;
 /* POST ANSWER */
 
 .ask-answer {
+  padding-top:100px;
   width: 70%;
   margin: 3% 0% 0% 15%;
 }
@@ -319,12 +324,14 @@ font-family: 'Poppins', sans-serif;
 
 .ask-user {
   text-decoration: none;
+  color: white;
+  font-size: 15px;
 }
 
 /* ANSWERS */
 .answeredBy {
-  float: right;
-  color: #6e7c7c;
+  float: left;
+  color: white;
   position: relative;
 }
 
@@ -1361,8 +1368,6 @@ span
   height: 50%;
   height:50vh;
   margin: 0;
-  /* border: 3px solid black; */
-  /* border-radius: 10%; */
 }
 .ctr 
 {
@@ -1376,6 +1381,6 @@ span
 }
 #wrapper3
 {
-  background-image: linear-gradient(#74ebd5,#ACB6E5);
+  /* background-image: linear-gradient(#74ebd5,#ACB6E5); */
 }
 

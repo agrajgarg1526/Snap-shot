@@ -83,7 +83,6 @@ async function uploadToCloudinary(locaFilePath) {
   return cloudinary.uploader
     .upload(locaFilePath, { public_id: filePathOnCloudinary })
     .then((result) => {
-      // console.log(result)
       fs.unlinkSync(locaFilePath);
 
       return {
@@ -114,8 +113,6 @@ app.use(function (req, res, next) {
     res.locals.pic = req.user.image;
     res.locals.id = req.user._id;
     res.locals.tiny_api = process.env.DB_TINY_API_KEY;
-
-    // console.log(res.locals.tiny_api);
   }
 
   next();
@@ -157,7 +154,6 @@ const quesSchema = new mongoose.Schema({
   location: String,
 });
 
-// quesSchema.plugin(timeZone, { paths: ['date', 'subDocument.subDate'] });
 
 const UserDetail = new mongoose.Schema({
   username: String,
@@ -245,7 +241,6 @@ app.get(
   }),
   function (req, res) {
     // Successful authentication, redirect home.
-    // console.log(req.user.googleId);
     res.redirect("/");
   }
 );
@@ -265,7 +260,6 @@ passport.use(
       profileFields: ["id", "emails", "name"],
     },
     function (accessToken, refreshToken, profile, cb) {
-      // console.log(profile);
       let extractedUser = profile.emails[0].value.substring(
         0,
         profile.emails[0].value.indexOf("@")
@@ -298,7 +292,6 @@ app.get(
   }),
   function (req, res) {
     // Successful authentication, redirect home.
-    // console.log(req.user);
     res.redirect("/");
   }
 );
@@ -306,8 +299,6 @@ app.get(
 /////////////////////////////////////////////////////////
 
 app.get("/", function (req, res) {
-  // console.log(res.locals);
-
   res.render("home");
 });
 
@@ -459,13 +450,6 @@ app.get("/users/:username", function (req, res) {
                   else if (rating < 80) rating = 4;
                   else rating = 5;
 
-                  // console.log(rating1);
-                  // console.log(rating2);
-                  // console.log(rating);
-                  // console.log(totalAnswers);
-                  // console.log(goodAnswers);
-                  // console.log(totalQuestions);
-                  // console.log(goodQuestions);
                   res.render("user", {
                     user: foundUser,
                     date: helper,
@@ -507,8 +491,6 @@ app.get("/logout", function (req, res) {
 });
 
 // app.post("/ask", function (req, res) {
-//   // console.log(req.body);
-//   // console.log(req.user);
 
 //   const question = new Question({
 //     title: req.body.askTitle,
@@ -526,7 +508,6 @@ app.get("/logout", function (req, res) {
 //     function (err, foundUser) {
 //       if (err) console.log(err);
 //       else {
-//         //  console.log(foundUser);
 //         Question.findOne(
 //           {
 //             title: req.body.askTitle,
@@ -545,23 +526,23 @@ app.get("/logout", function (req, res) {
 // });
 
 app.get("/questions/:questionID", function (req, res) {
-  // console.log(req.params.questionID);
-
-  Question.findById(req.params.questionID, function (err, foundQuestion) {
-    if (err) console.log(err);
-    else {
-      res.render("question", {
-        question: foundQuestion,
-        date: helper,
-        user: foundQuestion.askedBy,
-        query: req.query.sort,
-      });
-    }
-  });
+  Question.findOne({"_id":req.params.questionID})
+        .populate("askedby")
+        .exec(function (err, foundQuestion) {
+          if (err) {
+            console.log(err);
+          } else {
+            res.render("question", {
+              question: foundQuestion,
+              date: helper,
+              user: foundQuestion.askedby.username,
+              query: req.query.sort,
+            });
+          }
+        });
 });
 
 app.post("/vote", function (req, res) {
-  console.log(req.body)
   User.findOne(
     {
       username: req.user.username,
@@ -590,7 +571,6 @@ app.post("/vote", function (req, res) {
                   },
                 },
                 (err, response) => {
-                  // console.log(response);
                 }
               );
               foundUser.upvotedQuestions.push(req.body.id);
@@ -616,7 +596,6 @@ app.post("/vote", function (req, res) {
                   },
                 },
                 (err, response) => {
-                  // console.log(response);
                 }
               );
               foundUser.downvotedQuestions.push(req.body.id);
@@ -630,9 +609,76 @@ app.post("/vote", function (req, res) {
   res.redirect("/list");
 });
 
+app.post("/vote2", function (req, res) {
+  console.log(req.body);
+  User.findOne(
+    {
+      username: req.user.username,
+    },
+    function (err, foundUser) {
+      if (err) console.log(err);
+      else {
+        if (req.body.value == "up") {
+          var ifInDown = foundUser.downvotedQuestions.findIndex(function (
+            item
+          ) {
+            return item === req.body.id;
+          });
+          if (ifInDown === -1) {
+            var index = foundUser.upvotedQuestions.findIndex(function (item) {
+              return item === req.body.id;
+            });
+            if (index === -1) {
+              Question.findOneAndUpdate(
+                {
+                  _id: req.body.id,
+                },
+                {
+                  $inc: {
+                    upvote: 1,
+                  },
+                },
+                (err, response) => {
+                }
+              );
+              foundUser.upvotedQuestions.push(req.body.id);
+              foundUser.save();
+            }
+          }
+        } else if (req.body.value == "down") {
+          var ifInUp = foundUser.upvotedQuestions.findIndex(function (item) {
+            return item === req.body.id;
+          });
+          if (ifInUp === -1) {
+            var index = foundUser.downvotedQuestions.findIndex(function (item) {
+              return item === req.body.id;
+            });
+            if (index === -1) {
+              Question.findOneAndUpdate(
+                {
+                  _id: req.body.id,
+                },
+                {
+                  $inc: {
+                    upvote: -1,
+                  },
+                },
+                (err, response) => {
+                }
+              );
+              foundUser.downvotedQuestions.push(req.body.id);
+              foundUser.save();
+            }
+          }
+        }
+      }
+    }
+  );
+  const link = "/questions/" + req.body.id;
+  res.redirect(link);
+});
+
 app.post("/answer/:questionID", function (req, res) {
-  // console.log(req.body);
-  // git log
   let id = req.params.questionID;
   Question.findById(req.params.questionID, function (err, foundQuestion) {
     if (err) console.log(err);
@@ -664,14 +710,11 @@ app.post("/answer/:questionID", function (req, res) {
 
       const link = "/questions/" + req.params.questionID;
       res.redirect(link);
-
-      // console.log(foundQuestion);
     }
   });
 });
 
 app.get("/list", function (req, res) {
-  // console.log(req);
   if (req.user) {
     // logged in
 
@@ -679,7 +722,6 @@ app.get("/list", function (req, res) {
       Question.find(function (err, foundQuestions) {
         if (err) console.log(err);
         else {
-          //  console.log(foundQuestions[0].answers.length);
           res.render("list", {
             foundQuestions: foundQuestions,
             date: helper,
@@ -697,7 +739,6 @@ app.get("/list", function (req, res) {
           if (err) {
             console.log(err);
           } else {
-            // console.log(foundQuestions[0].askedby);
             res.render("list", {
               foundQuestions: foundQuestions,
               date: helper,
@@ -714,7 +755,7 @@ app.get("/list", function (req, res) {
           if (err) {
             console.log(err);
           } else {
-            // console.log(foundQuestions[0].askedby);
+            // console.log(foundQuestions);
             res.render("list", {
               foundQuestions: foundQuestions,
               date: helper,
@@ -730,11 +771,10 @@ app.get("/list", function (req, res) {
 });
 
 app.post("/voteAnswer", function (req, res) {
-  // console.log(req.body);
+  console.log(req.body);
   Question.findById(req.body.id, function (err, foundQuestion) {
     if (err) console.log(err);
     else {
-      // console.log(foundQuestion);
       for (var i = 0; i < foundQuestion.answers.length; i++) {
         if (foundQuestion.answers[i].id === req.body.answerid) {
           if (req.body.value == "up") {
@@ -789,9 +829,6 @@ app.post("/voteAnswer", function (req, res) {
 
 app.post("/deleteQues/:questionID", function (req, res) {
   let id = req.params.questionID;
-  // console.log(id);
-
-  // console.log(req.user.username);
 
   Question.findByIdAndDelete(id, function (err, docs) {
     if (err) {
@@ -800,7 +837,6 @@ app.post("/deleteQues/:questionID", function (req, res) {
       User.find({}, function (err, foundUser) {
         if (err) console.log(err);
         else {
-          //  console.log(foundUser.length);
           for (let i = 0; i < foundUser.length; i++) {
             const isLargeNumber = (element) => element === id;
 
@@ -808,9 +844,6 @@ app.post("/deleteQues/:questionID", function (req, res) {
             let upQues = foundUser[i].upvotedQuestions.findIndex(isLargeNumber);
             let downQues =
               foundUser[i].downvotedQuestions.findIndex(isLargeNumber);
-            // console.log(ques);
-            // console.log(upQues);
-            // console.log(downQues);
             if (ques != -1) foundUser[i].questions.splice(ques, 1);
             if (upQues != -1) foundUser[i].upvotedQuestions.splice(upQues, 1);
             if (downQues != -1)
@@ -841,13 +874,10 @@ app.post(
   upload.array("image", 6),
   async (req, res, next) => {
     var imageUrlList = [];
-    // console.log(req.body)
-    // console.log(req.params.username);
 
     for (var i = 0; i < req.files.length; i++) {
       req.files[i].path = "public/uploads/" + req.files[i].filename;
       var locaFilePath = req.files[i].path;
-      // console.log(locaFilePath);
       var result = await uploadToCloudinary(locaFilePath);
       imageUrlList.push(result.url);
     }
@@ -888,8 +918,6 @@ app.post(
   "/users/:username/imageUpload",
   upload.single("profile-file"),
   async (req, res, next) => {
-    // console.log(req.params.username);
-    // console.log(req.file);
     var locaFilePath = "public/uploads/" + req.file.filename;
     var result = await uploadToCloudinary(locaFilePath);
     User.findOne(
