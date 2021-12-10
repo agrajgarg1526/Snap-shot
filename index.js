@@ -681,7 +681,7 @@ app.get("/list", function (req, res) {
           if (err) {
             console.log(err);
           } else {
-            // console.log(foundQuestions);
+            // console.log(foundQuestions[0].askedby);
             res.render("list", {
               foundQuestions: foundQuestions,
               date: helper,

@@ -4,11 +4,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap");
 body {
-  background-color: #f6f5f5;
+   background-color: #f6f5f5;
+  
   font-family: 'Charmonman', cursive;
 font-family: 'Corinthia', cursive;
 font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
+  /* height: 100vh; */
   
 }
 
@@ -56,7 +58,7 @@ font-family: 'Poppins', sans-serif;
 
 .home-block {
   height: 100vh;
-  background-image: linear-gradient(#2193b0,#6dd5ed);
+  /* background-image: linear-gradient(#2193b0,#6dd5ed); */
 
   padding: 5% 30% 5% 30%;
 }
@@ -1216,28 +1218,17 @@ a,
 {
   height: 50vh;
 }
+/* #wrapper2
+{
+  background-image: linear-gradient(#200122,#6f0000);
+  
+}
+#wrapper3
+{
+  background-image: linear-gradient(#74ebd5,#ACB6E5);
+} */
+/* body
+{
+  background-image: url(C:\\Users\\Abhishek\\Desktop\\Major\\snap-shot\\public\\uploads\\project_major.jpg) !important;
+} */
 
-
-/* <div class="user-properties"> 
-<div class="user-properties-1">
-    <h1 class="user-username"><%=user.username%></h1>
-    <p class="user-email"><i class="fas fa-envelope"></i> <%=user.email%></p>
-    <p class="user-time">
-    <i class="fas fa-user"></i> User since 
-    <%=date.date(user.time)%>
-    </p>   
-</div>
-
-<div class="user-properties-2">
-    <img style="border-radius: 50%;height: 50%;" src="<%= user.image %> " alt="">
-    <%if(username===user.username){%>   
-        <form class="ask-form" action="/users/<%=username%>/imageUpload" method="POST" 
-            role="form" enctype="multipart/form-data">
-        <input type="file" 
-        class="form-control-file" name="profile-file">
-        <br>
-        <button type="submit">Upload</button>
-    </form>
-    <% } %> 
-</div>
-</div> */
