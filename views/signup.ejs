@@ -109,8 +109,9 @@
   {
     height:100%;
     width:100%;
-    background-image: linear-gradient(rgb(252, 125, 146)
-   , maroon);
+    /* background-image: linear-gradient(rgb(252, 125, 146)
+   , maroon); */
+   background-color: white;
     background-position: center;
     background-size:cover;
     position: absolute;
@@ -168,7 +169,7 @@
   .social-icons img{
     width: 30px;
     margin:0px 12px;
-    box-shadow:0 0 20px 0 #7f7f7f3d;
+    box-shadow:0 0 20px 0 white;
     cursor:pointer;
     border-radius: 50%;
     
@@ -264,16 +265,14 @@
                 <input type="text"class="input-field" name="username" id=""placeholder="User Id" required>
                 <input type="email"class="input-field" name="email" id=""placeholder="Email Id" required>
                  <input type="text"class="input-field" name="password" id=""placeholder="Enter Password" required>
-                 <input type="checkbox"class="check-box" name="" id=""><span>Agree</span>
-                 <button type ="submit"class="submit-btn">Sign up</button>
+                 <button style="margin-top: 20px;" type ="submit"class="submit-btn">Sign up</button>
              </form>
               
                
                <form  id="login"class="input-group" action="/login"method="POST">
                 <input type="text"class="input-field" name="username" id=""placeholder="User Id" required >
                  <input type="text"class="input-field" name="password" id=""placeholder="Enter Password" required>
-                 <input type="checkbox"class="check-box" name="" id=""><span>Remember Password</span>
-                 <button type ="submit"class="submit-btn">Log In</button>
+                 <button style="margin-top: 20px;"type ="submit"class="submit-btn">Log In</button>
              </form>
              
                 
