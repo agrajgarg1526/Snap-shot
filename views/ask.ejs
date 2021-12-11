@@ -65,7 +65,7 @@ html {
 }
 
 body {
-  background: #FFD16E;
+  background: white;
   height: 100%;
   padding: 0;
   margin: 0;
@@ -269,7 +269,7 @@ body {
 }
 
 </style>
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark" style="position: absolute;">
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark" style="position: absolute;width:220vh">
   <div class="container-fluid">
     
     <a class="navbar-brand" href="/" >Snapshot</a>
@@ -323,7 +323,7 @@ body {
           </a>
           
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="<%= link %>"> View Profile</a></li>
+            <li><a class="dropdown-item" href="<%= link %>" style="position: relative;"!important> View Profile</a></li>
             <li><a class="dropdown-item" href="/logout">Log Out</a></li>
           </ul>
         </li>
@@ -343,9 +343,9 @@ body {
 <div class="uploadWrapper">
   <form id="imageUploadForm" class="imageUploadForm" action="/photos-upload/<%=username%>" method="POST" enctype="multipart/form-data">
     <div class="mb-3" style="position: absolute;top: -3.5cm;text-align: center;">
-      <label for="askTitle" class="form-label"
-        ><h4>Caption</h4>
-        <p class="ask-p" style="padding:.05;">Be specific and to the point</p>
+      <label for="askTitle" class="form-label">
+      <h4 style="position: absolute;top:1.3cm;left:-1.5cm">Caption</h4>
+        
       </label>
       <input
         type="text"
@@ -355,6 +355,7 @@ body {
         autocomplete="off"
         placeholder="As Aesthitic as it goes"
         required
+        style="position: absolute;top: 2.2cm;width: 8cm;left:-4.2cm;"
       />
     </div>
     <span class="helpText" id="helpText">Upload an image</span>
@@ -433,9 +434,44 @@ $uploadedImg.on('webkitAnimationEnd MSAnimationEnd oAnimationEnd animationend', 
 $helpText.on('webkitAnimationEnd MSAnimationEnd oAnimationEnd animationend', function(){
   setTimeout(function() {
     $file.val('');  $form.removeClass('loading').removeClass('loaded');
-  }, 5000);
+  }, 10000);
 });
 </script>
 
 
- <!-- <%- include('partials/footer') %>  -->
+<section id="footer" style="position: absolute;bottom: 0cm;width: 220vh;text-align: center;">
+  <div class="footer">
+    <div class="footer-h7">
+      <h7>&copy; SnapShot</h7>
+    </div>
+
+    <div >
+      <a class="social-icon" href = "https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSBpDhZJJlqqdKPkWrWdxCvjsjWZZRgFRPfzGFshNkWmxGbJDftbgSXckJRNDZCrvGLCxCQX"><i class="fas fa-envelope"></i></a>
+        <a class="social-icon" href="https://www.facebook.com/agrajgarg1509/"
+          target="_blank"><i class="fab fa-facebook-square"></i></a>
+        <a class="social-icon" href="https://www.instagram.com/agrajgarg1526/"
+          target="_blank"><i class="fab fa-instagram"></i></a>
+        <a class="social-icon" href="https://www.linkedin.com/in/agraj-garg-539755169/"
+          target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        <a class="social-icon" href="https://github.com/agrajgarg1526"
+          target="_blank"><i class="fab fa-github"></i></a>
+          
+    </div>
+  </div>
+</section>
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+</script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+</script>
+
+</body>
+
+</html>
