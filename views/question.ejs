@@ -1,6 +1,4 @@
 <%- include('partials/header') %>
-
-
   <div class="row">
     <div class="col-8">
       <div  style="position: relative; left: 100px; top: 30px;" id="carouselExampleControls" data-interval="false"
@@ -125,7 +123,38 @@
       <%}%>
     </div>
   </div>
+  
+  
+
   <div style="position: relative;bottom: 100px;">
+    <form style="position: relative;float: right;right:50px" action="/questions/<%=question.id%>" method="GET">
+      <button type="button"
+        class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+  
+        <%if(query=="asc"){%>
+        Sort by : Upvotes: High to Low
+        <%question.answers.sort(function(a, b) {%>
+        <%return b.upvote - a.upvote;%>
+        <%});%>
+        <%}%>
+  
+      <%if(query=="time"){%>
+        Sort by : Recently Answered
+        <%question.answers.sort(function(a, b) {%>
+        <%return b.time - a.time;%>
+        <%});%>
+        <%}%> 
+      <%if(!query){%>
+        Sort by : Select
+        <%}%>
+      </button>
+  
+      <div class="dropdown-menu">
+        <button name="sort" value="asc" class="dropdown-item" type="submit"> Upvotes: High to Low</button>
+        <button name="sort" value="time" class="dropdown-item" type="submit">Recently Answered</button>
+      </div>
+    </form>
     <%for(let i=0;i<question.answers.length;i++){%>
       <br><br>
       <hr>
@@ -187,4 +216,6 @@
       </div>
       <%}%>
   </div>
+  
+
   <%- include('partials/footer') %>

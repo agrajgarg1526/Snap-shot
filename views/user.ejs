@@ -25,30 +25,106 @@
         </form>
     </div>
     <%if(cls=="profile"){%>
-     <div style="position: relative;top: 100px;left: 100px;" class="container">
-         <div class="row">
-             <div class="col-5">
-                <img style="border-radius: 50%;" src="<%= user.image %> " alt="">
-             </div>
-             <div class="col-7">
-                <h1 class="user-username"><%=user.username%></h1>
-                <p class="user-email"><i class="fas fa-envelope"></i><a style="text-decoration: none;color:white;" href="mailto:<%=user.email%>"> <%=user.email%></a></p>
-                <p style="font-size: 15px;" class="user-time">
-                <i class="fas fa-user"></i> User since 
-                <%=date.date(user.time)%>
-                </p>  
-                <%if(username===user.username){%>   
-                    <form class="ask-form" action="/users/<%=username%>/imageUpload" method="POST" 
-                        role="form" enctype="multipart/form-data">
-                    <input style="position: relative;right: 150px;"type="file" 
-                    class="form-control-file" name="profile-file">
-                    <br>
-                    <button style="position: relative;bottom: 30px;"type="submit">Upload</button>
-                </form>
-                <% } %>  
-             </div>
-         </div>
-     </div>
+      <div class="user-properties">
+        
+        <div class="user-properties-1">
+            <h1 class="user-username"><%=user.username%></h1>
+            <p class="user-email"><i class="fas fa-envelope"></i> <%=user.email%></p>
+            <p class="user-time">
+            <i class="fas fa-user"></i> User since 
+            <%=date.date(user.time)%>
+            </p>
+            
+        </div>
+        <div class="user-properties-2">
+            <img src="<%= user.image %> " alt="">
+            <%if(username===user.username){%>
+            <form action="/users/<%=username%>/imageUpload" method="POST" role="form"
+                enctype="multipart/form-data">
+                <input type="file" 
+                class="form-control-file" name="image">
+                <br>
+                <button type="submit">Upload</button>
+            </form>
+            <% } %> 
+        </div>
+    </div>
+     <div class="container stats">
+      <div class="row">
+          <div class=" user-stats-div col-lg-4 col-md-6">
+              <div>
+                  <h4> Number of Posts
+                      <br>
+                      <%if(username===user.username){%>
+                      You
+                      <%}%>
+               Made</h4>
+              <br>
+              <h2 class="user-stats"><%=user.questions.length%></h2>
+              </div>
+          </div>
+          <div class="user-stats-div col-lg-4 col-md-6">
+              <div>
+                  <h4> Number of Posts
+                      <br>`
+                      <%if(username===user.username){%>
+                      You
+                      <%}%>
+                    Liked</h4>
+                   <br>
+              <h2 class="user-stats"><%=user.upvotedQuestions.length%></h2>
+              </div>
+          </div>
+          <div class="user-stats-div col-lg-4 col-md-6">
+              <div>
+                  <h4> Number of Questions
+                      <br>
+                      <%if(username===user.username){%>
+                      You
+                      <%}%>
+                   Disliked</h4>
+                   <br>
+            <h2 class="user-stats"><%=user.downvotedQuestions.length%></h2>
+              </div>
+          </div>
+          <div class="user-stats-div col-lg-4 col-md-6">
+              <div>
+                  <h4> Number of Posts
+                      <br>
+                      <%if(username===user.username){%>
+                      You
+                      <%}%>
+                   Commented On</h4>
+                   <br>
+            <h2 class="user-stats"><%=user.answeredQuestions.length%></h2>
+              </div>
+          </div>
+          <div class="user-stats-div col-lg-4 col-md-6">
+              <div>
+                  <h4>Likes gained by
+                      <br>
+                      <%if(username===user.username){%>
+                      Your
+                      <%}%>
+                  Posts</h4>
+                   <br>
+            <h2 class="user-stats"><%=upvoteQuestions%></h2>
+              </div>
+          </div>
+          <div class="user-stats-div col-lg-4 col-md-6">
+              <div>
+                  <h4>Likes gained by
+                      <br>
+                      <%if(username===user.username){%>
+                      Your
+                      <%}%>
+                  Comments</h4>
+                   <br>
+            <h2 class="user-stats"><%=upvoteAnswers%></h2>
+              </div>
+          </div>
+      </div>
+  </div>
     <%} else{%>
     <div class="user-questions-div">
         <%if(arr.length===0){%>
@@ -161,6 +237,7 @@
     </div>
     <%}%>
 </div>
+
 <%- include('partials/footer') %>
 
                 

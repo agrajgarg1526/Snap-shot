@@ -372,6 +372,7 @@ app.get("/users/:username", async function (req, res) {
     {
       username: req.params.username,
     });
+  let questions = foundUser.questions;
   let cls, arr;
   if (
     req.query.questions === "profile" ||
@@ -379,6 +380,7 @@ app.get("/users/:username", async function (req, res) {
   ) {
     cls = "profile";
     arr = [];
+    arr = foundUser.answeredQuestions;
   } else if (req.query.questions === "asked") {
     cls = "added";
     arr = foundUser.questions;
@@ -388,22 +390,45 @@ app.get("/users/:username", async function (req, res) {
   }
   var records = await Question.find().populate("askedby").where("_id").in(arr).exec();
 
-  if (req.user) {
-    res.render("user", {
-      user: foundUser,
-      date: helper,
-      cls: cls,
-      arr: records,
-      // rating: rating,
-      // upvoteQuestions: upvoteQuestions,
-      // upvoteAnswers: upvoteAnswers,
-    });
+  var upvoteAnswers = 0, upvoteQuestions = 0, goodQuestions = 0, goodAnswers=0;
+
+  for(let i = 0; i < records.length; i++) {
+    for (let j = 0; j < records[i].answers.length; j++) {
+      if (
+        records[i].answers[j].answeredBy === req.params.username
+      ) {
+        totalAnswers++;
+        if (records[i].answers[j].upvote >= 1) goodAnswers++;
+        upvoteAnswers += records[i].answers[j].upvote;
+      }
+    }
   }
-  else {
-    // not logged in
-    res.render("login");
+
+  var records2 = await Question.find().populate("askedby").where("_id").in(questions).exec();
+
+  var totalQuestions = records2.length;
+  for (let i = 0; i < records2.length; i++) {
+    if (records2[i].upvote >= 1) goodQuestions++;
+    upvoteQuestions += records2[i].upvote;
   }
-});
+
+
+    if (req.user) {
+      res.render("user", {
+        user: foundUser,
+        date: helper,
+        cls: cls,
+        arr: records,
+        // rating: rating,
+        upvoteQuestions: upvoteQuestions,
+        upvoteAnswers: upvoteAnswers,
+      });
+    }
+    else {
+      // not logged in
+      res.render("login");
+    }
+  });
 
 app.get("/logout", function (req, res) {
   req.logout();
